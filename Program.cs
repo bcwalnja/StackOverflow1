@@ -62,7 +62,7 @@ namespace StackOverflow1
 
             for (int i = 0; i < 10; i++)
             {
-                //i =- 0, 1, 2, 3, 4, 5, 6, 7,8, 9, break
+                //i = 0, 1, 2, 3, 4, 5, 6, 7,8, 9, break
                 var output = start + i;
                 Console.WriteLine($"Current value: {output}");
                 if (i == 7)
