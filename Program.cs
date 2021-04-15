@@ -83,6 +83,14 @@ namespace StackOverflow1
                 index++;
             }
 
+            Console.WriteLine();
+
+            for (int i = 0; i < 10; i++)
+            {
+                Console.Write($"\r****{i}");
+                Thread.Sleep(1000);
+            }
+
         }
     }
 }
