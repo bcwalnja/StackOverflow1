@@ -15,6 +15,10 @@ namespace StackOverflow1
 
         static void Main(string[] args)
         {
+            var c = new Other();
+            c.KendynsChallenge();
+
+
             int first = 0;
             int second = 0;
 
@@ -85,10 +89,25 @@ namespace StackOverflow1
 
             Console.WriteLine();
 
-            for (int i = 0; i < 10; i++)
+            while (true)
             {
-                Console.Write($"\r****{i}");
-                Thread.Sleep(1000);
+                ConsoleKeyInfo key = Console.ReadKey();
+                if (key.Key == ConsoleKey.UpArrow)
+                {
+                    Console.CursorTop = Console.CursorTop - 1;
+                }
+                if (key.Key == ConsoleKey.DownArrow)
+                {
+                    Console.CursorTop = Console.CursorTop + 1;
+                }
+                if (key.Key == ConsoleKey.LeftArrow && Console.CursorLeft > 0)
+                {
+                    Console.CursorLeft = Console.CursorLeft - 1;
+                }
+                if (key.Key == ConsoleKey.RightArrow)
+                {
+                    Console.CursorLeft = Console.CursorLeft + 1;
+                }
             }
 
         }
