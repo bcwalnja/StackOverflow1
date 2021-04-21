@@ -29,16 +29,47 @@ namespace StackOverflow1
                 Console.WriteLine($"The default DateTime is {default(DateTime)}");
             }
 
-            var pickOneOfTheseWords = new string[]
+            var index = 0;
+            var input = string.Empty;
+
+            while (index < 3 && input != "stop")
             {
+                var pickOneOfTheseWords = new string[]
+                {
                 "The first word (I guess it's not a word)",
                 "Second"
-            };
+                };
 
-            var random = new Random().Next(0,2);
-            
-            Console.WriteLine($"From the choices {pickOneOfTheseWords[0]} and {pickOneOfTheseWords[1]}");
-            Console.WriteLine($"I randomly pick {pickOneOfTheseWords[random]}");
+                var random = new Random().Next(0, 2);
+
+                Console.WriteLine($"From the choices {pickOneOfTheseWords[0]} and {pickOneOfTheseWords[1]}");
+                Console.WriteLine($"I randomly pick {pickOneOfTheseWords[random]}");
+                index++;
+                Console.WriteLine();
+                input = Console.ReadLine();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        void Something()
+        {
+
 
             int first = 0;
             int second = 0;
@@ -132,5 +163,6 @@ namespace StackOverflow1
             }
 
         }
+
     }
 }
