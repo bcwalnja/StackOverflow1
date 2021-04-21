@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Text;
 using System.Numerics;
+using System.Dynamic;
 
 namespace StackOverflow1
 {
@@ -15,9 +16,6 @@ namespace StackOverflow1
 
         static void Main(string[] args)
         {
-            //var c = new Other();
-            //c.KendynsChallenge();
-
             var dateString = "mm/dd/yyyy";
             dateString = "04/21/21";
 
@@ -29,42 +27,37 @@ namespace StackOverflow1
                 Console.WriteLine($"The default DateTime is {default(DateTime)}");
             }
 
-            var index = 0;
-            var input = string.Empty;
-
-            while (index < 3 && input != "stop")
+            while (true)
             {
-                var pickOneOfTheseWords = new string[]
+                int age = GetUserInput("Please enter a person's age");
+                int money = GetUserInput("Please tell me how much money they have");
+
+                if (age >= 21 && money >= 12)
                 {
-                "The first word (I guess it's not a word)",
-                "Second"
-                };
-
-                var random = new Random().Next(0, 2);
-
-                Console.WriteLine($"From the choices {pickOneOfTheseWords[0]} and {pickOneOfTheseWords[1]}");
-                Console.WriteLine($"I randomly pick {pickOneOfTheseWords[random]}");
-                index++;
-                Console.WriteLine();
-                input = Console.ReadLine();
+                    Console.WriteLine("Here's your bottle of wine. ");
+                }
+                else
+                {
+                    Console.WriteLine("You may not purchase that bottle of wine.");
+                }
             }
+
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        static int GetUserInput(string prompt)
+        {
+            int result = 0;
+            while (result == 0)
+            {
+                Console.WriteLine(prompt);
+                var input = Console.ReadLine();
+                if (!int.TryParse(input, out result))
+                {
+                    Console.WriteLine("Please enter valid data.");
+                }
+            }
+            return result;
+        }
 
 
         void Something()
