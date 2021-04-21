@@ -15,9 +15,30 @@ namespace StackOverflow1
 
         static void Main(string[] args)
         {
-            var c = new Other();
-            c.KendynsChallenge();
+            //var c = new Other();
+            //c.KendynsChallenge();
 
+            var dateString = "mm/dd/yyyy";
+            dateString = "04/21/21";
+
+            Console.WriteLine($"The incoming string from NIST is {dateString}");
+
+            if (DateTime.TryParse(dateString, out DateTime date))
+            {
+                Console.WriteLine($"The parsed date is {date}");
+                Console.WriteLine($"The default DateTime is {default(DateTime)}");
+            }
+
+            var pickOneOfTheseWords = new string[]
+            {
+                "The first word (I guess it's not a word)",
+                "Second"
+            };
+
+            var random = new Random().Next(0,2);
+            
+            Console.WriteLine($"From the choices {pickOneOfTheseWords[0]} and {pickOneOfTheseWords[1]}");
+            Console.WriteLine($"I randomly pick {pickOneOfTheseWords[random]}");
 
             int first = 0;
             int second = 0;
