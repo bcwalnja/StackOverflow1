@@ -19,7 +19,7 @@ namespace StackOverflow1
         }
         public Employee(object name)
         {
-            Name = $"Employee {name}";
+            Name = name?.ToString();
         }
         public string Name { get; set; }
     }
@@ -43,7 +43,7 @@ namespace StackOverflow1
         }
         public Job(object name)
         {
-            Name = $"Job {name}";
+            Name = name.ToString();
         }
         public string Name { get; set; }
     }
@@ -56,14 +56,16 @@ namespace StackOverflow1
         public Crew Crew { get; set; }
         public Job Job { get; set; }
     }
-    
+
     class Program
     {
         static void Main(string[] args)
         {
             var schedules = GenerateData();
 
-            schedules = schedules.OrderBy(s => s.Crew.Name).ThenBy(s => s.Job.Name).ToList();
+            schedules = schedules
+                .OrderBy(s => s.Employee.Name)
+                .ToList();
 
             foreach (var schedule in schedules)
             {
@@ -76,22 +78,59 @@ namespace StackOverflow1
 
             Console.WriteLine("\n\n\n");
 
-            int columnWidth = GetLongestEmployeeName(schedules) + 10;
+            int columnWidth = GetLongestEmployeeName(schedules) + 2;
             Console.WriteLine($"column width: {columnWidth}");
 
-            var header = string.Empty;
             var jobNames = schedules.Select(s => s.Job.Name).Distinct().ToList();
-            foreach (var name in jobNames)
-            {
-                var job = name.PadRight(columnWidth);
-                header += $"{job} |";
-            }
+            var header = CreateRow(jobNames, columnWidth);
             Console.WriteLine(header);
-            Console.WriteLine();
-            for (int i = 0; i < jobNames.Count * (columnWidth + 2); i++)
+            int columnCount = jobNames.Count;
+            PrintHorizontalLine((columnWidth + 2) * columnCount);
+
+            var crewNames = schedules.Select(s => s.Crew.Name).Distinct().ToList();
+            var crews = CreateRow(crewNames, columnWidth);
+            Console.WriteLine(crews);
+
+            var groups = schedules.GroupBy(s => s.Job);
+            var rowCount = groups.Max(gr => gr.Count());
+
+            for (int row = 0; row < rowCount; row++)
+            {
+                var rowNames = groups.Select(g => SelectEmployeeAt(g, row)).ToList();
+                Console.WriteLine(CreateRow(rowNames, columnWidth));
+            }
+
+        }
+
+        private static string SelectEmployeeAt(IGrouping<Job, EmployeeSchedule> g, int row)
+        {
+            var employees = g.Select(e => e.Employee);
+            if (employees.Count() > row)
+            {
+                return employees.ElementAt(row)?.Name ?? string.Empty;
+            }
+            return string.Empty;
+        }
+
+        private static void PrintHorizontalLine(int width)
+        {
+            for (int i = 0; i < width; i++)
             {
                 Console.Write("=");
             }
+            Console.WriteLine();
+        }
+
+        private static string CreateRow(List<string> rowNames, int columnWidth)
+        {
+            var row = string.Empty;
+
+            foreach (var rowName in rowNames)
+            {
+                var name = rowName.PadRight(columnWidth);
+                row += $"{name} |";
+            }
+            return $"{row}";
         }
 
         private static int GetLongestEmployeeName(List<EmployeeSchedule> schedules)
@@ -109,7 +148,7 @@ namespace StackOverflow1
             var employees = new List<Employee>();
             for (int i = 0; i < 25; i++)
             {
-                employees.Add(new Employee(i));
+                employees.Add(new Employee(Names[i]));
             }
 
             var crews = new List<Crew>();
@@ -121,22 +160,65 @@ namespace StackOverflow1
             var jobs = new List<Job>();
             for (int i = 0; i < 5; i++)
             {
-                jobs.Add(new Job(i));
+                jobs.Add(new Job(Jobs[i]));
             }
 
             var result = new List<EmployeeSchedule>();
             var rand = new Random();
-            for (int i = 0; i < rand.Next(15,25); i++)
+            for (int i = 0; i < rand.Next(15, 25); i++)
             {
+                var job = rand.Next(6) == 5 ?
+                    jobs[0] : jobs[i % 5];
+
+
+
                 result.Add(new EmployeeSchedule()
                 {
                     Employee = employees[i],
-                    Crew = crews[i%5],
-                    Job = jobs[i%5],
+                    Crew = crews[i % 5],
+                    Job = job,
                 });
             }
 
             return result;
         }
+
+        private static List<string> Names => new List<string>()
+        {
+            "Aldair Miranda Provisor*",
+            "Andy Byler",
+            "Benjamin Perez",
+            "Brent Nolt",
+            "Brian Ramirez",
+            "Brian Slattery",
+            "Bruce Smith'",
+            "Bryan Robles",
+            "Carlos Alfredo Portugal*",
+            "Carol Snyder",
+            "Chris Peachy",
+            "Ciro Pina Loyola*",
+            "Damian Long",
+            "Daniel Casarrubias",
+            "Edilberto Portugal Mendoza*",
+            "Elias Moyao-Ramirez",
+            "Eric Schmeelk",
+            "Ezra Weaver",
+            "Felipe Diaz",
+            "Fernando Martinez Reyes*",
+            "Figgy-Robert Byler",
+            "Jacob Roberts",
+            "Jacob McCowen",
+            "Javier Dominguez",
+            "John Mullen",
+        };
+
+        private static List<string> Jobs => new List<string>()
+        {
+            "100' 3k Sukup Leg",
+            "Replace Tube & Flight",
+            "3,500 BPH Conveyor 38'",
+            "21' 15RW CHT w/ Reclaim",
+            "Extras For Swap",
+        };
     }
 }
